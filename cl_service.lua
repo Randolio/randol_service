@@ -72,7 +72,7 @@ function generateTask()
     end
     taskZone = lib.zones.box({
         coords = vec3(spot.x, spot.y, spot.z),
-        size = vector3(2, 2, 2),
+        size = vec3(2, 2, 2),
         rotation = 0,
         debug = false,
         inside = function()

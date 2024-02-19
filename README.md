@@ -1,8 +1,7 @@
 ## Randolio: Community Service
 
 Requirements:
-QBCore or ESX Framework 
-ox_lib: https://github.com/overextended/ox_lib/releases/tag/v3.16.2
+QBCore or ESX Framework |  ox_lib: https://github.com/overextended/ox_lib/releases/tag/v3.16.2
 
 # Installation/Usage
 

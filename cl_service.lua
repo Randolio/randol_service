@@ -55,7 +55,7 @@ local function serviceLoop()
         local cs = Config.Zone.start
         while inService do
             local pos = GetEntityCoords(ped)
-            if #(pos - cs) > 30.0 and not isPlayerDead() then
+            if #(pos - cs) > 30.0 and not isPlyDead() then
                 SetEntityCoords(ped, cs)
                 DoNotification(('You still have %s tasks left.'):format(tasksRemaining))
             end

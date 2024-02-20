@@ -23,7 +23,7 @@ AddEventHandler('onResourceStart', function(res)
 end)
 
 function isPlyDead()
-    return PlayerData.metadata.isdead
+    return PlayerData.metadata.inlaststand or PlayerData.metadata.isdead
 end
 
 function DoNotification(text, nType)

@@ -1,6 +1,4 @@
-Config = {}
-
-Config.Zone = {
+return {
     start = vec3(164.42, -991.62, 30.09), -- center of the task area.
     spots = {
         vec3(157.16, -1003.98, 29.42),

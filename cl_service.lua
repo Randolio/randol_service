@@ -1,3 +1,4 @@
+local Config = lib.require('config')
 local inService = false
 local activeSpot = false
 local tasksRemaining = 0
@@ -52,7 +53,7 @@ local function serviceLoop()
     generateTask()
     CreateThread(function()
         local ped = cache.ped
-        local cs = Config.Zone.start
+        local cs = Config.start
         while inService do
             local pos = GetEntityCoords(ped)
             if #(pos - cs) > 30.0 and not isPlyDead() then
@@ -65,9 +66,9 @@ local function serviceLoop()
 end
 
 function generateTask()
-    spot = Config.Zone.spots[math.random(#Config.Zone.spots)]
+    spot = Config.spots[math.random(#Config.spots)]
     while lastLoc == spot do
-        spot = Config.Zone.spots[math.random(#Config.Zone.spots)]
+        spot = Config.spots[math.random(#Config.spots)]
         Wait(100)
     end
     taskZone = lib.zones.box({
@@ -103,7 +104,7 @@ end
 
 RegisterNetEvent('randol_cs:client:sendtoService', function(taskNumber, New)
     if GetInvokingResource() then return end
-    SetEntityCoords(cache.ped, Config.Zone.start)
+    SetEntityCoords(cache.ped, Config.start)
     inService = true
     tasksRemaining = tonumber(taskNumber)
     if New then

@@ -124,6 +124,7 @@ RegisterNetEvent('randol_cs:client:finishService', function()
     lastLoc = nil
     taskZone = nil
     DoNotification('Your community service is now over.', 'success')
+    SetEntityCoords(cache.ped, Config.finish)
 end)
 
 AddEventHandler('onResourceStop', function(resourceName) 

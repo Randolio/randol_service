@@ -30,8 +30,10 @@ local function releasePlayer(src, ply, cid)
     DoNotification(src, 'You released them from community service.', 'success')
 end
 
-function checkOnLoad(src)
+function checkService(src)
     local Player = GetPlayer(src)
+    if not Player then return end
+
     local cid = GetPlyIdentifier(Player)
 
     if not players[cid] then return end
@@ -116,11 +118,8 @@ AddEventHandler('onResourceStart', function(res)
     local players = GetActivePlayers()
     if #players > 0 then
         for i = 1, #players do
-            local src = players[i]
-            local Player = GetPlayer(src)
-            if Player then
-                checkOnLoad(src)
-            end
+            local src = tonumber(players[i])
+            checkService(src)
         end
     end
 end)

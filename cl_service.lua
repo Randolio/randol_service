@@ -81,13 +81,13 @@ function generateTask()
                 lib.hideTextUI()
                 completeTask()
             end
-	end,
-	onEnter = function()
+        end,
+        onEnter = function()
             lib.showTextUI('**E** - Sweep', {icon = 'broom', position = "left-center"})
-	end,
-	onExit = function()
+        end,
+        onExit = function()
             lib.hideTextUI()
-	end
+        end
     })
     lastLoc = spot
     activeSpot = true
@@ -128,9 +128,9 @@ RegisterNetEvent('randol_cs:client:finishService', function()
 end)
 
 AddEventHandler('onResourceStop', function(resourceName) 
-	if GetCurrentResourceName() == resourceName then
+    if GetCurrentResourceName() == resourceName then
         if taskZone then taskZone:remove() end
-	end 
+    end 
 end)
 
 AddEventHandler('randol_cs:onPlayerLogout', function()

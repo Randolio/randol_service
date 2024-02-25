@@ -26,5 +26,5 @@ function CheckPoliceJob(xPlayer)
 end
 
 AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
-    checkOnLoad(playerId)
+    checkService(playerId)
 end)

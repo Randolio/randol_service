@@ -25,5 +25,5 @@ end
 
 RegisterNetEvent('QBCore:Server:OnPlayerLoaded', function()
     local src = source
-    checkOnLoad(src)
+    checkService(src)
 end)

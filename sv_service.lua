@@ -115,7 +115,7 @@ AddEventHandler('onResourceStart', function(res)
         end
     end
 
-    local players = GetActivePlayers()
+    local players = GetPlayers()
     if #players > 0 then
         for i = 1, #players do
             local src = tonumber(players[i])

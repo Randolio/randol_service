@@ -66,11 +66,10 @@ local function serviceLoop()
 end
 
 function generateTask()
-    spot = Config.spots[math.random(#Config.spots)]
-    while lastLoc == spot do
+    repeat
         spot = Config.spots[math.random(#Config.spots)]
-        Wait(100)
-    end
+    until spot ~= lastLoc
+    
     taskZone = lib.zones.box({
         coords = vec3(spot.x, spot.y, spot.z),
         size = vec3(2, 2, 2),

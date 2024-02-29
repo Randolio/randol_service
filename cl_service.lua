@@ -1,6 +1,7 @@
 local Config = lib.require('config')
-local inService, activeSpot, showText, tasksRemaining = false, false, false, 0
+local inService, activeSpot, showText = false
 local spot, taskZone, lastLoc
+local tasksRemaining = 0
 
 local function sweepEmote(bool)
     local model = `prop_tool_broom`
@@ -21,7 +22,7 @@ local function sweepEmote(bool)
 end
 
 local function completeTask()
-    activeSpot, showText = false, false
+    activeSpot, showText = false
     sweepEmote(true)
     if taskZone then taskZone:remove() taskZone = nil end
     if lib.progressCircle({
@@ -103,7 +104,9 @@ end)
 
 RegisterNetEvent('randol_cs:client:finishService', function()
     if GetInvokingResource() then return end
-    inService, activeSpot, spot, lastLoc, taskZone, tasksRemaining = false, false, nil, nil, nil, 0
+    inService, activeSpot = false
+    spot, taskZone, lastLoc = nil
+    tasksRemaining = 0
     DoNotification('Your community service is now over.', 'success')
     SetEntityCoords(cache.ped, Config.finish)
 end)
@@ -116,5 +119,7 @@ end)
 
 AddEventHandler('randol_cs:onPlayerLogout', function()
     if taskZone then taskZone:remove() end
-    inService, activeSpot, spot, lastLoc, taskZone, tasksRemaining = false, false, nil, nil, nil, 0
+    inService, activeSpot = false
+    spot, taskZone, lastLoc = nil
+    tasksRemaining = 0
 end)

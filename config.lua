@@ -1,6 +1,6 @@
 return {
     start = vec3(164.42, -991.62, 30.09), -- center of the task area.
-    finish = vec3(164.42, -991.62, 30.09), -- The location you want the player to be set to upon finishing their community service. Currently set to the start position.
+    finish = vec3(414.17, -974.91, 29.45), -- MRPD
     spots = {
         vec3(157.16, -1003.98, 29.42),
         vec3(164.76, -1007.33, 29.42),

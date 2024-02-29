@@ -1,10 +1,6 @@
 local Config = lib.require('config')
-local inService = false
-local activeSpot = false
-local tasksRemaining = 0
-local spot
-local taskZone
-local lastLoc
+local inService, activeSpot, showText, tasksRemaining = false, false, false, 0
+local spot, taskZone, lastLoc
 
 local function sweepEmote(bool)
     local model = `prop_tool_broom`
@@ -25,8 +21,9 @@ local function sweepEmote(bool)
 end
 
 local function completeTask()
-    activeSpot = false
+    activeSpot, showText = false, false
     sweepEmote(true)
+    if taskZone then taskZone:remove() taskZone = nil end
     if lib.progressCircle({
         duration = 8000,
         position = 'bottom',
@@ -38,11 +35,6 @@ local function completeTask()
         sweepEmote(false)
         tasksRemaining = lib.callback.await('randol_cs:server:updateService', false)
         if tasksRemaining > 0 then
-            if taskZone then
-                taskZone:remove()
-                taskZone = nil
-            end
-            spot = nil
             DoNotification(('Tasks Remaining: %s'):format(tasksRemaining))
             generateTask()
         end
@@ -66,39 +58,34 @@ local function serviceLoop()
 end
 
 function generateTask()
+    local spot
     repeat
         spot = Config.spots[math.random(#Config.spots)]
     until spot ~= lastLoc
     
-    taskZone = lib.zones.box({
-        coords = vec3(spot.x, spot.y, spot.z),
-        size = vec3(2, 2, 2),
-        rotation = 0,
-        debug = false,
-        inside = function()
-            if IsControlJustPressed(0, 38) and activeSpot then
+    taskZone = lib.points.new({ 
+        coords = vec3(spot.x, spot.y, spot.z), 
+        distance = 60, 
+        nearby = function(point)
+            DrawMarker(21, point.coords.x, point.coords.y, point.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 140, 12, 199, 190, false, true, 2, true, false, false, false)
+            if point.isClosest and point.currentDistance <= 1.5 then
+                if not showText then
+                    showText = true
+                    lib.showTextUI('**E** - Sweep', {icon = 'broom', position = "left-center"})
+                end
+                if IsControlJustPressed(0, 38) and activeSpot then
+                    lib.hideTextUI()
+                    completeTask()
+                end
+            elseif showText then
+                showText = false
                 lib.hideTextUI()
-                completeTask()
             end
-        end,
-        onEnter = function()
-            lib.showTextUI('**E** - Sweep', {icon = 'broom', position = "left-center"})
-        end,
-        onExit = function()
-            lib.hideTextUI()
-        end
+        end, 
     })
+
     lastLoc = spot
     activeSpot = true
-    Wait(500)
-    CreateThread(function()
-        while activeSpot do
-            if spot then
-                DrawMarker(21, spot.x, spot.y, spot.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 140, 12, 199, 190, false, true, 2, true, false, false, false)
-            end
-            Wait(0)
-        end
-    end)
 end
 
 RegisterNetEvent('randol_cs:client:sendtoService', function(taskNumber, New)
@@ -116,12 +103,7 @@ end)
 
 RegisterNetEvent('randol_cs:client:finishService', function()
     if GetInvokingResource() then return end
-    inService = false
-    activeSpot = false
-    tasksRemaining = 0
-    spot = nil
-    lastLoc = nil
-    taskZone = nil
+    inService, activeSpot, spot, lastLoc, taskZone, tasksRemaining = false, false, nil, nil, nil, 0
     DoNotification('Your community service is now over.', 'success')
     SetEntityCoords(cache.ped, Config.finish)
 end)
@@ -134,10 +116,5 @@ end)
 
 AddEventHandler('randol_cs:onPlayerLogout', function()
     if taskZone then taskZone:remove() end
-    activeSpot = false
-    spot = nil
-    lastLoc = nil
-    inService = false
-    tasksRemaining = 0
-    taskZone = nil
+    inService, activeSpot, spot, lastLoc, taskZone, tasksRemaining = false, false, nil, nil, nil, 0
 end)

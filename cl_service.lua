@@ -1,5 +1,5 @@
 local Config = lib.require('config')
-local inService, activeSpot, showText = false
+local activeSpot, showText = false
 local spot, taskZone, lastLoc
 local tasksRemaining = 0
 
@@ -47,7 +47,7 @@ local function serviceLoop()
     CreateThread(function()
         local ped = cache.ped
         local cs = Config.start
-        while inService do
+        while LocalPlayer.state.inService do
             local pos = GetEntityCoords(ped)
             if #(pos - cs) > 30.0 and not isPlyDead() then
                 SetEntityCoords(ped, cs)
@@ -92,7 +92,7 @@ end
 RegisterNetEvent('randol_cs:client:sendtoService', function(taskNumber, New)
     if GetInvokingResource() then return end
     SetEntityCoords(cache.ped, Config.start)
-    inService = true
+    LocalPlayer.state.inService = true
     tasksRemaining = tonumber(taskNumber)
     if New then
         DoNotification(('You were sentenced to community service for %s tasks.'):format(tasksRemaining))
@@ -104,7 +104,8 @@ end)
 
 RegisterNetEvent('randol_cs:client:finishService', function()
     if GetInvokingResource() then return end
-    inService, activeSpot = false
+    activeSpot = false
+    LocalPlayer.state.inService = false
     spot, taskZone, lastLoc = nil
     tasksRemaining = 0
     DoNotification('Your community service is now over.', 'success')
@@ -119,7 +120,8 @@ end)
 
 AddEventHandler('randol_cs:onPlayerLogout', function()
     if taskZone then taskZone:remove() end
-    inService, activeSpot = false
+    LocalPlayer.state.inService = false
+    activeSpot = false
     spot, taskZone, lastLoc = nil
     tasksRemaining = 0
 end)

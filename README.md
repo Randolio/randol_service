@@ -20,3 +20,5 @@ This is my first time using a bridge to support both QB and ESX frameworks. I te
 # Showcase
 
 https://streamable.com/zgumrf
+
+**You have permission to use this in your server and edit for your personal needs but are not allowed to redistribute.**
